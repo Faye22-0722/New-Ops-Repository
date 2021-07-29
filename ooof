@@ -1,0 +1,16 @@
+ vi /opt/scripts/user-access-details.sh
+
+#!/bin/bash
+echo ""
+
+MYPATH=/var/log/secure*
+tuser=$(grep "$yday" $MYPATH | grep "Accepted|Failed" | wc -l)
+suser=$(grep "$yday" $MYPATH | grep "Accepted password|Accepted publickey|keyboard-interactive" | wc -l)
+fuser=$(grep "$yday" $MYPATH | grep "Failed password" | wc -l)
+scount=$(grep "$yday" $MYPATH | grep "Accepted" | awk '{print $9;}' | sort | uniq -c)
+fcount=$(grep "$yday" $MYPATH | grep "Failed" | awk '{print $9;}' | sort | uniq -c)
+echo "       User Access Report on: $yday"
+echo "Number of Users logged on System: $tuser"
+echo "Successful logins attempt: $suser"
+echo "Failed logins attempt: $fuser"
+echo -e "Success User Details:\n $scount"
